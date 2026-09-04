@@ -1,0 +1,238 @@
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  background: var(--color-canvas-bg);
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+.step-node {
+  position: relative;
+  width: 260px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 12px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.03);
+  transition: box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.step-node::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  bottom: -3px;
+  width: 4px;
+  border-radius: 3px;
+  background: inherit;
+}
+
+.step-node:hover {
+  border-color: var(--color-border-strong);
+}
+
+.step-node--selected {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Validation badge in the card's top-right corner. */
+.step-node__badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px rgba(24, 24, 27, 0.18);
+  z-index: 1;
+}
+
+.step-node__badge--error {
+  color: var(--color-danger);
+}
+
+.step-node__badge--warning {
+  color: #d97706;
+}
+
+.step-node__icon {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-node__body {
+  min-width: 0;
+  flex: 1;
+}
+
+.step-node__category {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  margin-bottom: 1px;
+}
+
+.step-node__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.step-node__subtitle {
+  font-size: 11px;
+  color: var(--color-text-faint);
+  line-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+/* Reordering: shown on an edge in place of its "+" while a reorderable step is being
+   dragged close enough to it — see StepEdge.tsx's dropTarget and lib/dragReorder.ts. */
+.drop-indicator {
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-focus);
+  border-radius: 999px;
+  padding: 4px 10px;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.35);
+  animation: drop-indicator-pulse 900ms ease-in-out infinite;
+}
+
+@keyframes drop-indicator-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* "+" insert-step affordance — both the on-edge button and the terminal dangling one */
+.add-step-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.06);
+}
+
+.add-step-btn:hover {
+  border-color: var(--color-focus);
+  color: var(--color-focus);
+}
+
+/* The dashed Trigger/Action preview shown only on a brand-new, unconfigured workflow
+   (steps.length === 0) — see buildDisplayGraph.ts's buildSkeletonGraph. */
+.step-node--ghost {
+  border-style: dashed;
+  border-color: var(--color-border-strong);
+}
+
+.step-node--ghost::before {
+  display: none;
+}
+
+.step-node--ghost .step-node__icon {
+  background: var(--color-bg);
+  color: var(--color-text-faint);
+}
+
+.step-node--ghost .step-node__category {
+  color: var(--color-text-muted);
+}
+
+.step-node--ghost .step-node__title {
+  color: var(--color-text-muted);
+  white-space: normal;
+  line-height: 16px;
+}
+
+.end-node {
+  width: 64px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px dashed var(--color-border-strong);
+  color: var(--color-text-faint);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.canvas-zoom-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  box-shadow: 0 1px 3px rgba(24, 24, 27, 0.08);
+}
+
+.canvas-zoom-bar button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.canvas-zoom-bar button:hover {
+  background: var(--color-bg);
+}
+
+.canvas-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 11px;
+  color: var(--color-text-faint);
+}
+
+.canvas-hint a {
+  color: var(--color-focus);
+  text-decoration: none;
+  margin-left: 4px;
+}

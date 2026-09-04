@@ -1,0 +1,106 @@
+/* Design tokens lifted directly from the provided demo (workflow-14.netlify.app) via
+   computed-style inspection — see README "Design fidelity" for how these were captured.
+   Zinc-based neutrals + a per-step-type accent palette. */
+
+:root {
+  --font-sans: -apple-system, "system-ui", "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --color-bg: #fafafa;
+  --color-canvas-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-border: #ececef;
+  --color-border-strong: #e4e4e7;
+  --color-text: #18181b;
+  --color-text-muted: #71717a;
+  --color-text-faint: #9a9aa4;
+  --color-primary-bg: #18181b;
+  --color-primary-text: #ffffff;
+  --color-danger: #dc2626;
+  --color-focus: #6366f1;
+
+  /* Step accent palette, keyed by the portable color *token* the backend registry ships
+     on each step type (StepTypeDefinition.color) — not by step type. colorFor() in
+     lib/stepClient.ts resolves a token straight to one of these via var(), so the palette
+     lives in one place (here) and a new step type just reuses a token with no JS change.
+     Exact hexes read off the demo's legend icons (see README "Design fidelity"); sky and
+     violet are this build's two additions. */
+  --step-color-slate: #52525b;
+  --step-color-orange: #f4581f;
+  --step-color-indigo: #5b5bd6;
+  --step-color-teal: #14b8c8;
+  --step-color-emerald: #0d9f6e;
+  --step-color-amber: #f59e0b;
+  --step-color-sky: #0ea5e9;
+  --step-color-violet: #8b5cf6;
+  --step-color-rose: #e11d48;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* The builder's main row: left panel(s) + canvas, filling the space under the top bar. */
+.builder-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* Shown when there are no workflows at all (e.g. after deleting the last one). */
+.builder-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-text-faint);
+}
+
+.builder-empty__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.builder-empty__hint {
+  font-size: 13px;
+}
