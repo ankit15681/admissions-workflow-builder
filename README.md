@@ -7,6 +7,8 @@ project, keeping the visual design of the provided demo (`workflow-14.netlify.ap
 swapping two stack choices at the user's request: **Webpack** instead of Vite, and
 **RTK Query** instead of React Query.
 
+![Workflow builder demo](docs/media/workflow-builder-demo.gif)
+
 ## Running it
 
 Requires Node 18+.
