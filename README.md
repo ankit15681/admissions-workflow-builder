@@ -7,6 +7,11 @@ project, keeping the visual design of the provided demo (`workflow-14.netlify.ap
 swapping two stack choices at the user's request: **Webpack** instead of Vite, and
 **RTK Query** instead of React Query.
 
+## Live demo
+Both are on free hosting tiers (Netlify + Render), deployed from this repo's `main` branch. The backend spins down after 15 minutes of inactivity, so the first request after a while can take ~50 seconds to wake it up. Its SQLite data resets to the seeded demo state on restart/redeploy.
+
+- App: https://admissions-workflow-builder.netlify.app
+- API: https://admissions-workflow-builder.onrender.com/api/health
 ![Workflow builder demo](docs/media/workflow-builder-demo.gif)
 
 ## Running it
