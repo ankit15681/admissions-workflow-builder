@@ -45,7 +45,7 @@ export interface StepTypeDefinition {
   category: StepCategory;
   description: string;
   /**
-   * Optional gating flag — Brevo's `is_sales_restricted` equivalent. When true the builder
+   * Optional gating flag. When true the builder
    * hides this step type from the palette (e.g. a plan-gated or not-yet-released action).
    * Part of the public projection, so gating is data-driven, not a frontend edit.
    */

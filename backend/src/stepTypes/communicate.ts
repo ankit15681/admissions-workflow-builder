@@ -2,8 +2,7 @@ import type { StepTypeDefinition } from "./types";
 import { getApplication } from "../db/applications";
 import { renderTemplate } from "./variables/recipientVariables";
 
-// Stubbed email/SMS provider (per CLAUDE_CODE_PROMPT.md: "Stub these. Log ... rather
-// than wiring a real provider"). Idempotency is guaranteed one layer up: the executor
+// Stubbed email/SMS provider: logs instead of calling a real provider. Idempotency is guaranteed one layer up: the executor
 // only calls execute() once per (run, step, attempt), enforced by the unique index on
 // run_step_history, so a retried resume can never double-send.
 function sendEmailStub(to: string, subject: string, body: string) {

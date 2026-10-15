@@ -8,7 +8,7 @@ import type { StepCategory, StepCategoryMeta } from "../../types/stepTypes";
 import "./editor.css";
 
 // Fallback used only until GET /api/step-categories resolves (or if it fails). The server is
-// the source of truth for category labels + ordering (modelled on Brevo's getCategoryData).
+// the source of truth for category labels + ordering.
 const FALLBACK_CATEGORIES: StepCategoryMeta[] = [
   { key: "communication", label: "Communication", order: 1 },
   { key: "flow", label: "Flow control", order: 2 },

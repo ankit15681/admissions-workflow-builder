@@ -14,7 +14,7 @@ stepTypesRouter.get("/step-types", (_req, res) => {
 });
 
 // Palette catalog metadata — category labels + ordering — served rather than hardcoded on
-// the frontend (modelled on Brevo's getCategoryData). See stepTypes/categories.ts.
+// the frontend. See stepTypes/categories.ts.
 stepTypesRouter.get("/step-categories", (_req, res) => {
   res.json(stepCategories);
 });

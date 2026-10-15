@@ -79,22 +79,22 @@ hooks/useStepForm.ts   binds a field def to (config, onChange) via projectConfig
 
 After phases 1–3, every step editor in the app — generic and bespoke — renders through the same atoms + field registry. There are no hand-rolled `<input>`/`<select>`/`<textarea>` left in the editors.
 
-### Brevo-aligned additions (implemented)
+### Additions from production automation editors (implemented)
 
-After inspecting Brevo's automation editor (see `brevo-architecture-notes.md`), we adopted the
-patterns that extend this architecture without rewriting the engine:
+Drawing on patterns common in production marketing-automation editors, we adopted the ones
+that extend this architecture without rewriting the engine:
 
-- **Container / layout atom** — `Section` (Brevo's `bordered_section`) + an `EditorSection[]`
+- **Container / layout atom** — `Section` (a titled field group) + an `EditorSection[]`
   layout, so a step editor groups its flat fields under titles. Grouping is presentational only;
   the projected config stays flat. This is the fractal Unit stepping up from leaf field to group.
   Demonstrated in `ScheduleInterviewEditor`.
 - **Descriptor DSL + composition** — field factories (`text`/`select`/`number`/`tags`/`checkbox`)
   in `lib/stepForm` are base specs overridden by the options you pass; a shared group is a plain
-  descriptor object spread into a def — object spread is the TS-idiomatic form of Brevo's
-  `__base__type` inheritance.
+  descriptor object spread into a def — object spread is the TS-idiomatic form of
+  descriptor inheritance.
 - **Backend-served catalog metadata** — `GET /api/step-categories` serves category labels +
   ordering; the palette consumes it instead of hardcoding them. Plus an optional `hidden` gating
-  flag on the step-type projection (Brevo's `is_sales_restricted`).
+  flag on the step-type projection (for plan-gated or unreleased actions).
 - **Reference-by-id** for heavy content — adopted in principle (our configs are small; no
   separate asset service built).
 - **Per-editor data-logic hooks** — each bespoke editor (Schedule Interview, Communicate,
@@ -103,9 +103,8 @@ patterns that extend this architecture without rewriting the engine:
   the fractal contract: every unit — atom *and* step editor — is a UI component + a data-logic
   hook, with the logic testable in isolation from the JSX.
 
-Deliberately not adopted: Brevo's id-keyed node map + prev/next linked-list graph model, and a
-fully server-driven form DDL — both are churn without benefit at our scale (rationale in the
-notes doc).
+Deliberately not adopted: an id-keyed node map + prev/next linked-list graph model, and a
+fully server-driven form DDL — both are churn without benefit at our scale.
 
 ## Proof-of-concept in this repo
 

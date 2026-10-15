@@ -1,8 +1,7 @@
 import type { StepCategory } from "./types";
 
 // Catalog metadata served to the builder — the palette's category labels and ordering,
-// modelled on Brevo's getCategoryData (which serves category grouping + a `sequence` order
-// rather than hardcoding it in the frontend). Adding/reordering a category is a data change
+// served from the backend rather than hardcoded in the frontend. Adding/reordering a category is a data change
 // here, not a frontend edit.
 export interface StepCategoryMeta {
   key: StepCategory;

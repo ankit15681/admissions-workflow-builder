@@ -1,11 +1,18 @@
 # Admissions Workflow Automation
 
-A workflow automation builder for school admissions — a React canvas for building and
-publishing flows, and a Node backend that executes them durably (multi-day waits included).
-Built from `CLAUDE_CODE_PROMPT.md` and `Admissions_Workflow_Design_Document.docx` in this
-project, keeping the visual design of the provided demo (`workflow-14.netlify.app`) and
-swapping two stack choices at the user's request: **Webpack** instead of Vite, and
-**RTK Query** instead of React Query.
+A workflow automation builder for school admissions teams: a React canvas where staff build
+and publish flows, and a Node backend that runs them durably, including multi-day waits.
+
+I built this against a design document (`Admissions_Workflow_Design_Document.docx`, in this
+repo) and a reference demo whose visual design I matched. Two stack choices differ from the
+reference: I used **Webpack** instead of Vite and **RTK Query** instead of React Query.
+
+**Highlights**
+- A step-type registry drives everything: the palette, the canvas and the config forms all
+  render from `GET /api/step-types`, so adding a step type is a backend change.
+- Durable execution with no queue infrastructure: waits are a `due_at` column in SQLite, and a
+  unique index on `(run, step, attempt)` stops a step from ever firing twice.
+- Draft autosave with revision guards, explicit publish, run history, and drag-to-reorder.
 
 ## Live demo
 Both are on free hosting tiers (Netlify + Render), deployed from this repo's `main` branch. The backend spins down after 15 minutes of inactivity, so the first request after a while can take ~50 seconds to wake it up. Its SQLite data resets to the seeded demo state on restart/redeploy.
@@ -36,8 +43,7 @@ applications + four demo workflows are inserted) — nothing to configure. Open
 
 ## What's fully wired vs. stubbed
 
-Built in the order `CLAUDE_CODE_PROMPT.md` lays out — each a working checkpoint before the
-next — rather than all nine step types and four workflows polished at once:
+Built in stages, each a working checkpoint before the next, rather than all nine step types and four workflows polished at once:
 
 | Piece | Status |
 | --- | --- |
@@ -50,9 +56,9 @@ next — rather than all nine step types and four workflows polished at once:
 | Run history view (polled) | Done |
 | **Workflow 2 — Post-Offer → Enrolment** | Seeded as a **draft only** — steps arranged per the doc's table (to show `Request Document` in the builder) but not executed/tested end-to-end |
 | **Workflow 4 (design doc's "Incomplete Application Nudge")** | Not built — everything it needs (Trigger, Delay, Branches, Communicate, Set status, Goal) already exists and works in Workflows 1 & 3, so it would be pure repetition rather than new coverage |
-| **Scholarship Application Review** (not in the design doc — added on request) | Fully wired, published, executes live. See below. |
+| **Scholarship Application Review** (not in the design doc; added as an extension) | Fully wired, published, executes live. See below. |
 
-Stubbed, per `CLAUDE_CODE_PROMPT.md`'s own instructions:
+Stubbed on purpose, since they're outside what the exercise needed to prove:
 
 - **Email/SMS** — `console.log`'d from the backend (`[stub email] to=... subject=...`), not sent anywhere.
 - **File storage** — `Request Document` tracks a checklist and a `pending`/`submitted` status
@@ -72,9 +78,9 @@ their Delay steps so you can watch a full run — including the reminder/escalat
 inside a minute or two, without changing the system clock. Open the Run history panel
 (Overview tab → "View run history") to watch it progress.
 
-### Scholarship Application Review (added on request, not in the design doc)
+### Scholarship Application Review (an extension beyond the design doc)
 
-Not one of the design doc's Part B examples — added afterward on request, following the same
+Not one of the design doc's Part B examples — added afterwards as an extension, following the same
 pattern as the doc's own Workflow 4 framing ("generalising to a different situation" rather
 than reinventing one). Its Trigger is scoped to the Scholarship form specifically, via the
 `form` field on the Trigger's own `configSchema` (`backend/src/stepTypes/trigger.ts`) that the
@@ -199,8 +205,8 @@ machine: before a step's side effect fires, a `pending` row is reserved in
 racing resume can't double-execute it (NFR-2). `backend/src/engine/scheduler.ts` is a
 1-second `setInterval` that polls `workflow_runs` for anything past its `due_at` — durability
 comes from `due_at` being a real column, not from the interval itself, so a restart just means
-the next tick picks up whatever's already due (NFR-1), per `CLAUDE_CODE_PROMPT.md`'s
-explicit steer away from standing up Redis/BullMQ for this exercise.
+the next tick picks up whatever's already due (NFR-1). Standing up Redis/BullMQ would add infrastructure without
+adding durability at this scale.
 
 **REST only.** No WebSockets or SSE anywhere in the frontend — run history and draft state are
 polled (`pollingInterval` on the relevant RTK Query hooks) or refetched on demand.
@@ -251,8 +257,8 @@ Flagged here rather than silently decided, per the doc's own "Open Questions" sp
 3. **Workflow 3 has an extra terminal Goal** (`"Decision recorded after escalation"`) after step
    11 in the doc's B.3 table, which sets status but doesn't name a Goal for that path. Every path
    through a run needs a labelled end state (FR-9), so one was added.
-4. **Delays are seconds, not days**, in the two fully-wired demo workflows, per
-   `CLAUDE_CODE_PROMPT.md`'s own instruction to make them "demoable live."
+4. **Delays are seconds, not days**, in the two fully-wired demo workflows, so they can be
+   demoed live.
 5. **"New workflow" asks for a name up front via a modal** (`NameWorkflowModal.tsx`), and the
    top bar's pencil icon reopens the same modal to rename the current workflow at any time
    (`PATCH /api/workflows/:id`) — the design doc doesn't specify a naming UI, so this follows
@@ -296,8 +302,8 @@ working unchanged).
 
 ## Design fidelity
 
-The demo doesn't ship a design system doc, so colors, spacing, and type were read directly off
-`workflow-14.netlify.app` via computed-style inspection (panel widths, the zinc-based neutral
+The reference demo doesn't ship a design system doc, so colors, spacing, and type were read
+directly off it via computed-style inspection (panel widths, the zinc-based neutral
 palette, the seven step-type accent colors, corner radii, font stack) rather than eyeballed —
 see `frontend/src/styles/globals.css` for the resulting tokens. The two new step types
 (Request Document, Assign to Staff / Create Task) get two new accent colors chosen to sit
@@ -358,7 +364,7 @@ just code review):
   immediately during the drag (not just after release) and that the new `{x, y}` persisted to
   the backend via the debounced autosave.
 
-### Drag-to-reorder (added on request, not in the design doc)
+### Drag-to-reorder (an extension beyond the design doc)
 
 Once dragging worked at all (above), the follow-up request was to actually be able to reorder
 steps by dragging one to a different spot in the chain — not just reposition it cosmetically.

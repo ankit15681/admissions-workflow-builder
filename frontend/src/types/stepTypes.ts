@@ -12,7 +12,7 @@ export interface StepPorts {
 export type StepCategory = "flow" | "communication" | "application" | "staff" | "scheduling";
 
 // Served by GET /api/step-categories — the palette's category labels + ordering, so the
-// frontend no longer hardcodes them (modelled on Brevo's getCategoryData).
+// frontend no longer hardcodes them.
 export interface StepCategoryMeta {
   key: StepCategory;
   label: string;
@@ -29,7 +29,7 @@ export interface StepTypeDefinition {
   color: string;
   category: StepCategory;
   description: string;
-  /** Optional gating flag (Brevo's is_sales_restricted equivalent): when true the builder
+  /** Optional gating flag: when true the builder
    * hides this step type from the palette. */
   hidden?: boolean;
   /** Card-subtitle template with `{field}` tokens filled from config (see

@@ -29,7 +29,7 @@ export type StepUnitDef = Record<string, FieldDescriptor>;
 
 // --- Descriptor DSL ---------------------------------------------------------------------
 // Small factories that produce field descriptors. They double as the composition/"extends"
-// mechanism (Brevo's `__base__type`): a factory is the base spec, and the object you pass
+// mechanism: a factory is the base spec, and the object you pass
 // overrides it — e.g. `number({ min: 15, label: "Duration", required: true })`. A reusable
 // group is just a plain descriptor object spread into a def, so inheritance needs no special
 // machinery beyond object spread.

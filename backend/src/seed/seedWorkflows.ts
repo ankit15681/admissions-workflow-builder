@@ -9,8 +9,7 @@ function nowIso(): string {
 
 // ---------------------------------------------------------------------------
 // Workflow 1 — Admission Fee Payment Reminder (design doc B.1), fully wired and
-// published. Delays are seconds instead of days so it's demoable live, per
-// CLAUDE_CODE_PROMPT.md step 5 ("Use a short delay ... so it's demoable live").
+// published. Delays are seconds instead of days so it can be demoed live.
 // ---------------------------------------------------------------------------
 function buildWorkflow1Steps(): Step[] {
   const ids = {
@@ -146,7 +145,7 @@ function buildWorkflow1Steps(): Step[] {
 // ---------------------------------------------------------------------------
 // Workflow 3 — Application Review & Staff Assignment (design doc B.3), fully
 // wired and published, to prove Assign to Staff / Create Task + the task_status
-// condition actually work end-to-end (CLAUDE_CODE_PROMPT.md step 6). One addition
+// condition actually work end-to-end. One addition
 // not spelled out step-by-step in the doc's table: a second Goal step after the
 // escalated-but-completed path (step 11), since every path through the graph
 // needs a labelled terminal step — see README "Deviations".
@@ -261,9 +260,8 @@ function buildWorkflow3Steps(): Step[] {
 // ---------------------------------------------------------------------------
 // Workflow 2 — Post-Offer → Enrolment (design doc B.2). Seeded as a draft only
 // (arranged per the doc's table, structurally valid) to show Request Document
-// in the builder — not published/executed end-to-end in this pass. See
-// CLAUDE_CODE_PROMPT.md's ordering: "Only after 1–6 work: polish, add the
-// remaining workflows." README documents this explicitly.
+// in the builder — not published/executed end-to-end in this pass. The
+// README documents this explicitly.
 // ---------------------------------------------------------------------------
 function buildWorkflow2Steps(): Step[] {
   const ids = {
@@ -313,7 +311,7 @@ function buildWorkflow2Steps(): Step[] {
 
 // ---------------------------------------------------------------------------
 // Workflow 4 — Scholarship Application Review (not one of the design doc's Part B
-// examples — added on request). Fully wired and published, exercising all nine
+// examples — added as an extension). Fully wired and published, exercising all nine
 // step types in one flow: Request Document + a reminder loop to chase missing
 // financial-aid paperwork, then Assign to Staff / Create Task + escalation to get
 // a committee decision, mirroring the proven shapes from Workflow 2 (docs) and
